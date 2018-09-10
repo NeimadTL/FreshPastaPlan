@@ -1,15 +1,47 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>FreshPastaPlan</title>
+    <title>Fresh Pasta Plan</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #364051;">
+      <a class="text-white navbar-brand" href="<%= root_path %>">Fresh Pasta Plan</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="text-white nav-link" href="<%= root_path %>">Catalog</a>
+          </li>
+          <li class="nav-item">
+            <a class="text-white nav-link" href="#">My Orders</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="background">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <% if notice.present? %>
+              </br><div class="p-3 mb-2 bg-success text-white rounded"><%= notice %></div>
+            <% end %>
+          	<% if alert.present? %>
+              </br><div class="p-3 mb-2 bg-danger text-white rounded"><%= alert %></div>
+          	<% end %>
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

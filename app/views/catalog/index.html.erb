@@ -1,0 +1,17 @@
+<br/><h5 class="">Pastas list</h5><br/>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @pastas.each do |pasta| %>
+      <tr>
+        <td><%= pasta.name %></td>
+        <td>No action yet</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
