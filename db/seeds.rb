@@ -5,3 +5,11 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+Pasta.delete_all
+
+Pasta.create!(name: 'Gnocci')
+Pasta.create!(name: 'Orecchiette')
+Pasta.create!(name: 'Fusili')
+Pasta.create!(name: 'Penne')
+Pasta.create!(name: 'Tortiglioni')
