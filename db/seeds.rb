@@ -7,9 +7,13 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 Pasta.delete_all
+Subscription.delete_all
 
 Pasta.create!(name: 'Gnocci')
 Pasta.create!(name: 'Orecchiette')
 Pasta.create!(name: 'Fusili')
 Pasta.create!(name: 'Penne')
 Pasta.create!(name: 'Tortiglioni')
+
+Subscription.create!(name: '2 packs plan', monthly_price: 15)
+Subscription.create!(name: '4 packs plan', monthly_price: 25)
