@@ -24,10 +24,21 @@
           <li class="nav-item">
             <a class="text-white nav-link" href="#">My Orders</a>
           </li>
-          <li class="nav-item">
-            <a class="text-white nav-link" href="<%= subscriptions_path %>">Subscriptions</a>
-          </li>
+          <% if user_signed_in? && current_user.users_subs_relationship != nil %>
+            <li class="nav-item">
+              <a class="text-white nav-link" href="<%= edit_users_subs_relationship_path(current_user.users_subs_relationship) %>">Change my plan</a>
+            </li>
+          <% end %>
         </ul>
+
+        <% if user_signed_in? %>
+          <%= link_to t('.sign_out'), destroy_user_session_path, method: :delete,
+            class: 'text-white nav-link' %>
+        <% else %>
+          <%= link_to t('.sign_in'), new_user_session_path, class: 'text-white nav-link' %>
+          <%= link_to t('.sign_up'), new_user_registration_path, class: 'text-white nav-link' %>
+        <% end %>
+
       </div>
     </nav>
 

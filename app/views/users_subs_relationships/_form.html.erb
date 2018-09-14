@@ -1,0 +1,9 @@
+</br>
+<%= simple_form_for(@users_subs_relationship) do |f| %>
+  <%= f.collection_select :subscription_id, Subscription.all, :id, :name %></br>
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>
+
+<script type="text/javascript">
+  $("select").addClass("form-control");
+</script>
