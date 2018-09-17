@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_12_181829) do
+ActiveRecord::Schema.define(version: 2018_09_17_135155) do
 
   create_table "pasta", force: :cascade do |t|
     t.string "name"
@@ -47,6 +47,9 @@ ActiveRecord::Schema.define(version: 2018_09_12_181829) do
     t.integer "subscription_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["subscription_id"], name: "index_users_subs_relationships_on_subscription_id"
+    t.index ["user_id", "subscription_id"], name: "index_users_subs_relationships_on_user_id_and_subscription_id", unique: true
+    t.index ["user_id"], name: "index_users_subs_relationships_on_user_id"
   end
 
 end

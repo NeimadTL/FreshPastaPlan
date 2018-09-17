@@ -1,6 +1,7 @@
 class UsersSubsRelationshipsController < ApplicationController
 
   before_action :set_user_subs_relationship, only: [:edit, :update]
+  before_action :authenticate_user!
 
   def new
     @users_subs_relationship = UsersSubsRelationship.new
