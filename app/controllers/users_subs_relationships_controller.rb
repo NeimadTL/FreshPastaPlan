@@ -2,6 +2,7 @@ class UsersSubsRelationshipsController < ApplicationController
 
   before_action :set_user_subs_relationship, only: [:edit, :update]
   before_action :authenticate_user!
+  before_action :require_to_have_no_subscription, only: [:new, :create]
 
   def new
     @users_subs_relationship = UsersSubsRelationship.new
@@ -37,5 +38,12 @@ class UsersSubsRelationshipsController < ApplicationController
 
     def set_user_subs_relationship
       @users_subs_relationship = UsersSubsRelationship.find(params[:id])
+    end
+
+    def require_to_have_no_subscription
+      if current_user.subscription
+        flash[:notice] = 'You already have a subscription'
+        redirect_to root_path
+      end
     end
 end
