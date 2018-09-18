@@ -77,5 +77,79 @@ RSpec.describe UsersSubsRelationshipsController, type: :controller do
     end
   end
 
+  describe "when GET #edit" do
+    before do
+      sign_in(user, nil)
+    end
+
+    it "returns http success when user is logged with good params" do
+      subscription = Subscription.last
+      users_subs_relationship = UsersSubsRelationship.create!(user_id: user.id, subscription_id: subscription.id)
+      get :edit, params: { id: users_subs_relationship.id }
+      expect(response).to have_http_status(:success)
+    end
+
+    # it "returns http success when user is logged with bad params" do
+      # put that following code in ApplicationController
+      # ---------------------------------------------------------------------------------------
+        # rescue_from ActiveRecord::RecordNotFound, :with => :not_found
+        # def not_found(e)
+        #   render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found
+        # end
+      # ---------------------------------------------------------------------------------------
+    # end
+
+    it "returns http redirect when user isn't logged in" do
+      sign_out(user)
+      subscription = Subscription.last
+      users_subs_relationship = UsersSubsRelationship.create!(user_id: user.id, subscription_id: subscription.id)
+      get :edit, params: { id: users_subs_relationship.id }
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(new_user_session_path)
+    end
+  end
+
+  describe "when PUT #update" do
+    before do
+      sign_in(user, nil)
+    end
+
+    it "returns http redirect when user is logged with good params" do
+      subscription = Subscription.last
+      another_subscription = Subscription.first
+      users_subs_relationship = UsersSubsRelationship.create!(user_id: user.id, subscription_id: subscription.id)
+      put :update, params: { id: users_subs_relationship.id,
+        users_subs_relationship: { subscription_id: another_subscription.id } }
+      updated_user_sub_relationship = UsersSubsRelationship.find(users_subs_relationship.id)
+      expect(updated_user_sub_relationship.subscription_id).to eql another_subscription.id
+      expect(flash[:notice]).to match('Your plan has been updated')
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(root_path)
+    end
+
+    # it "returns http redirect when user is logged with bad params" do
+      # put that following code in ApplicationController
+      # ---------------------------------------------------------------------------------------
+        # rescue_from ActiveRecord::RecordNotFound, :with => :not_found
+        # def not_found(e)
+        #   render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found
+        # end
+      # ---------------------------------------------------------------------------------------
+    # end
+
+    it "returns http redirect when user isn't logged in" do
+      sign_out(user)
+      subscription = Subscription.last
+      another_subscription = Subscription.first
+      users_subs_relationship = UsersSubsRelationship.create!(user_id: user.id, subscription_id: subscription.id)
+      put :update, params: { id: users_subs_relationship.id,
+        users_subs_relationship: { subscription_id: another_subscription.id } }
+      not_updated_user_sub_relationship = UsersSubsRelationship.find(users_subs_relationship.id)
+      expect(not_updated_user_sub_relationship.subscription_id).to eql subscription.id
+      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
+  end
 
 end
