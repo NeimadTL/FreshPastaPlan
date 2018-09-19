@@ -7,4 +7,6 @@ class User < ApplicationRecord
   has_one :users_subs_relationship
   has_one :subscription, through: :users_subs_relationship
 
+  has_many :orders
+
 end
