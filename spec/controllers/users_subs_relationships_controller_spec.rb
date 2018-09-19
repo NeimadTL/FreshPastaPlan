@@ -89,15 +89,10 @@ RSpec.describe UsersSubsRelationshipsController, type: :controller do
       expect(response).to have_http_status(:success)
     end
 
-    # it "returns http success when user is logged with bad params" do
-      # put that following code in ApplicationController
-      # ---------------------------------------------------------------------------------------
-        # rescue_from ActiveRecord::RecordNotFound, :with => :not_found
-        # def not_found(e)
-        #   render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found
-        # end
-      # ---------------------------------------------------------------------------------------
-    # end
+    it "renders 404.html template with nonexistent resource" do
+      get :edit, params: { id: Random.new.rand(2000..3000) }
+      expect(response).to render_template(:file => "#{Rails.root}/public/404.html")
+    end
 
     it "returns http redirect when user isn't logged in" do
       sign_out(user)
@@ -127,15 +122,15 @@ RSpec.describe UsersSubsRelationshipsController, type: :controller do
       expect(response).to redirect_to(root_path)
     end
 
-    # it "returns http redirect when user is logged with bad params" do
-      # put that following code in ApplicationController
-      # ---------------------------------------------------------------------------------------
-        # rescue_from ActiveRecord::RecordNotFound, :with => :not_found
-        # def not_found(e)
-        #   render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found
-        # end
-      # ---------------------------------------------------------------------------------------
-    # end
+    it "returns http unprocessable entity when user is logged with bad params" do
+      subscription = Subscription.last
+      users_subs_relationship = UsersSubsRelationship.create!(user_id: user.id, subscription_id: subscription.id)
+      put :update, params: { id: users_subs_relationship.id, users_subs_relationship: { subscription_id: nil } }
+      not_updated_user_sub_relationship = UsersSubsRelationship.find(users_subs_relationship.id)
+      expect(not_updated_user_sub_relationship.subscription_id).to eql subscription.id
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to render_template(:edit)
+    end
 
     it "returns http redirect when user isn't logged in" do
       sign_out(user)
