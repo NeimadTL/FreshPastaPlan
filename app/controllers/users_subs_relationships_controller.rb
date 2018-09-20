@@ -22,12 +22,18 @@ class UsersSubsRelationshipsController < ApplicationController
   end
 
   def update
-    @users_subs_relationship.update_attributes(users_subs_relationship_params)
-    if @users_subs_relationship.valid?
-      flash[:notice] = 'Your plan has been updated'
+    last_order = current_user.orders.last
+    if last_order && current_user.can_still_add_pasta?(last_order)
+      flash[:alert] = "You can't change plan now because pastas are missing on your last order"
       redirect_to root_path
     else
-      render :edit, status: :unprocessable_entity
+      @users_subs_relationship.update_attributes(users_subs_relationship_params)
+      if @users_subs_relationship.valid?
+        flash[:notice] = 'Your plan has been updated'
+        redirect_to root_path
+      else
+        render :edit, status: :unprocessable_entity
+      end
     end
   end
 
