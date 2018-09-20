@@ -1,0 +1,23 @@
+<br/><h5 class="">My orders</h5><br/>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Package</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= order.id %></td>
+        <td>
+          <% order.package.pastas.each do |pasta| %>
+            <p><%= pasta.name %><p>
+          <% end %>
+        </td>
+        <td>No action yet</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

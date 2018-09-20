@@ -21,9 +21,11 @@
           <li class="nav-item">
             <a class="text-white nav-link" href="<%= root_path %>">Catalog</a>
           </li>
-          <li class="nav-item">
-            <a class="text-white nav-link" href="#">My Orders</a>
-          </li>
+          <% if user_signed_in? %>
+            <li class="nav-item">
+              <a class="text-white nav-link" href="<%= orders_path %>">My Orders</a>
+            </li>
+          <% end %>
           <% if user_signed_in? && current_user.users_subs_relationship != nil %>
             <li class="nav-item">
               <a class="text-white nav-link" href="<%= edit_users_subs_relationship_path(current_user.users_subs_relationship) %>">Change my plan</a>

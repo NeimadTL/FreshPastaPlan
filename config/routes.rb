@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   root 'catalog#index'
   get 'catalog' => 'catalog#index'
   resources :users_subs_relationships, only: [:new, :create, :edit, :update]
+  resources :orders, only: [:index, :create]
 end

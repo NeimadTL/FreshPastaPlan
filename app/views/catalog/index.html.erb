@@ -10,7 +10,12 @@
     <% @pastas.each do |pasta| %>
       <tr>
         <td><%= pasta.name %></td>
-        <td>No action yet</td>
+        <td>
+          <%= form_tag('/orders') do %>
+            <%= hidden_field_tag 'pasta_id', pasta.id  %>
+            <%= submit_tag 'Order', class: 'btn btn-outline-info btn-sm' %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
