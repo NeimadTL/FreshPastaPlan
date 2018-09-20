@@ -9,4 +9,7 @@ class User < ApplicationRecord
 
   has_many :orders
 
+  def can_still_add_pasta?(last_order)
+    last_order.package.pastas.count < self.subscription.pasta_count_allowed
+  end
 end

@@ -1,22 +1,31 @@
 class OrdersController < ApplicationController
 
   before_action :authenticate_user!
-  
+
   def index
     @orders = current_user.orders
   end
 
   def create
-    order = Order.create(user: current_user)
-    if order.valid?
-      package = order.create_package(order_id: order.id)
-      package.pastas_packages_relationships.create(pasta_id: params[:pasta_id], package_id: package.id)
-      flash[:notice] = 'Thanks for your order :)'
-      redirect_to root_path
+    last_order = current_user.orders.last
+    success_message = 'Thanks for your order :)'
+    if last_order && current_user.can_still_add_pasta?(last_order)
+      last_order.package.pastas_packages_relationships.create(pasta_id: params[:pasta_id])
+      flash[:notice] = success_message
     else
-      Order.destroy(order.id)
-      flash[:alert] = 'Something went wrong :('
+      new_order = Order.new(user: current_user)
+      if new_order.save
+        package = new_order.create_package(order_id: new_order.id)
+        package.pastas_packages_relationships.create(pasta_id: params[:pasta_id], package_id: package.id)
+        flash[:notice] = success_message
+      else
+        Order.destroy(order.id)
+        flash[:alert] = 'Something went wrong :('
+      end
     end
+    redirect_to root_path
   end
+
+
 
 end
